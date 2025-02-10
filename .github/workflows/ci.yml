@@ -19,7 +19,7 @@ jobs:
       postgres:
         image: postgres:12
         ports:
-          - 5432
+          - 5432:5432
         env:
           POSTGRES_USER: root
           POSTGRES_PASSWORD: postgres
