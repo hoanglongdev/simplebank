@@ -26,7 +26,7 @@ func TestTransferTx(t *testing.T) {
 			result, err := store.TransferTx(context.Background(), TransferTxParams{
 				FromAccountID: account1.ID,
 				ToAccountID:   account2.ID,
-				Amuount:       amount,
+				Amount:        amount,
 			})
 			errs <- err
 			results <- result
@@ -51,7 +51,7 @@ func TestTransferTx(t *testing.T) {
 		require.NotZero(t, transfer.ID)
 		require.NotZero(t, transfer.CreatedAt)
 
-		_, err = store.GetTransfer(context.Background(), transfer.ID)
+		_, err = testQueries.GetTransfer(context.Background(), transfer.ID)
 		require.NoError(t, err)
 
 		// Check from entry
@@ -62,7 +62,7 @@ func TestTransferTx(t *testing.T) {
 		require.NotZero(t, fromEntry.ID)
 		require.NotZero(t, fromEntry.CreatedAt)
 
-		_, err = store.GetEntry(context.Background(), fromEntry.ID)
+		_, err = testQueries.GetEntry(context.Background(), fromEntry.ID)
 		require.NoError(t, err)
 
 		// Check to entry
@@ -73,7 +73,7 @@ func TestTransferTx(t *testing.T) {
 		require.NotZero(t, toEntry.ID)
 		require.NotZero(t, toEntry.CreatedAt)
 
-		_, err = store.GetEntry(context.Background(), fromEntry.ID)
+		_, err = testQueries.GetEntry(context.Background(), fromEntry.ID)
 		require.NoError(t, err)
 
 		// Check account
@@ -101,11 +101,11 @@ func TestTransferTx(t *testing.T) {
 	}
 
 	// Check final
-	updateAccount1, err := store.GetAccount(context.Background(), account1.ID)
+	updateAccount1, err := testQueries.GetAccount(context.Background(), account1.ID)
 	require.NoError(t, err)
 	require.NotEmpty(t, updateAccount1)
 
-	updateAccount2, err := store.GetAccount(context.Background(), account2.ID)
+	updateAccount2, err := testQueries.GetAccount(context.Background(), account2.ID)
 	require.NoError(t, err)
 	require.NotEmpty(t, updateAccount2)
 
@@ -137,7 +137,7 @@ func TestTransferBackwardTx(t *testing.T) {
 			_, err := store.TransferTx(context.Background(), TransferTxParams{
 				FromAccountID: fromAccountID,
 				ToAccountID:   toAccountID,
-				Amuount:       amount,
+				Amount:        amount,
 			})
 			errs <- err
 		}()
@@ -150,11 +150,11 @@ func TestTransferBackwardTx(t *testing.T) {
 	}
 
 	// Check final
-	updateAccount1, err := store.GetAccount(context.Background(), account1.ID)
+	updateAccount1, err := testQueries.GetAccount(context.Background(), account1.ID)
 	require.NoError(t, err)
 	require.NotEmpty(t, updateAccount1)
 
-	updateAccount2, err := store.GetAccount(context.Background(), account2.ID)
+	updateAccount2, err := testQueries.GetAccount(context.Background(), account2.ID)
 	require.NoError(t, err)
 	require.NotEmpty(t, updateAccount2)
 
